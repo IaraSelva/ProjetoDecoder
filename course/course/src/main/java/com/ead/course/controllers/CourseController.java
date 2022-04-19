@@ -32,7 +32,7 @@ public class CourseController {
     CourseService courseService;
 
     @PostMapping
-    public ResponseEntity<Object> saveCourse(@RequestBody @Valid CourseDto courseDto){
+    public ResponseEntity<Object> saveCourse(@RequestBody @Valid CourseDto courseDto) {
 
         log.debug("POST saveCourse courseDto received {} ", courseDto.toString());
         var courseModel = new CourseModel();
@@ -48,11 +48,11 @@ public class CourseController {
     }
 
     @DeleteMapping("/{courseId}")
-    public ResponseEntity<Object> deleteCourse(@PathVariable(value = "courseId")UUID courseId){
+    public ResponseEntity<Object> deleteCourse(@PathVariable(value = "courseId") UUID courseId) {
 
         log.debug("DELETE deleteCourse courseId received {} ", courseId);
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
-        if(!courseModelOptional.isPresent()){
+        if (!courseModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
         }
 
@@ -63,11 +63,11 @@ public class CourseController {
     }
 
     @PutMapping("/{courseId}")
-    public ResponseEntity<Object> updateCourse(@PathVariable(value = "courseId")UUID courseId,
-                                               @RequestBody @Valid CourseDto courseDto){
+    public ResponseEntity<Object> updateCourse(@PathVariable(value = "courseId") UUID courseId,
+                                               @RequestBody @Valid CourseDto courseDto) {
         log.debug("PUT updateCourse courseDto received {} ", courseDto.toString());
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
-        if(!courseModelOptional.isPresent()){
+        if (!courseModelOptional.isPresent()) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
         }
         var courseModel = courseModelOptional.get();
@@ -81,20 +81,24 @@ public class CourseController {
     }
 
     @GetMapping("/pageable")
-    public ResponseEntity<Page<CourseModel>> getAllCoursesPageable(SpecificationTemplate.CourseSpec spec,
-                                                           @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable){
+    public ResponseEntity<Page<CourseModel>> getAllCoursesPageable(@RequestParam(required = false) UUID userId,
+                                                                   SpecificationTemplate.CourseSpec spec,
+                                                                   @PageableDefault(page = 0, size = 10, sort = "courseId", direction = Sort.Direction.ASC) Pageable pageable) {
+        if(userId != null){
+            return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(SpecificationTemplate.courseUserId(userId).and(spec), pageable));
+        }
         return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll(spec, pageable));
     }
 
     @GetMapping
-    public ResponseEntity<List<CourseModel>> getAllCourses(){
+    public ResponseEntity<List<CourseModel>> getAllCourses() {
         return ResponseEntity.status(HttpStatus.OK).body(courseService.findAll());
     }
 
     @GetMapping("/{courseId}")
-    public ResponseEntity<Object> getCourseById(@PathVariable(value = "courseId") UUID courseId){
+    public ResponseEntity<Object> getCourseById(@PathVariable(value = "courseId") UUID courseId) {
         Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
-        if(!courseModelOptional.isPresent()){
+        if (!courseModelOptional.isPresent()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
         }
 
