@@ -1,7 +1,7 @@
-package com.ead.authuser.controller;
+package com.ead.course.controllers;
 
-import com.ead.authuser.clients.UserClient;
-import com.ead.authuser.dto.CourseDto;
+import com.ead.course.clients.CourseClient;
+import com.ead.course.dtos.UserDto;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,15 +20,15 @@ import java.util.UUID;
 @Log4j2
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-public class UserCourseController {
+public class CourseUserController {
 
     @Autowired
-    UserClient userClient;
+    CourseClient courseClient;
 
-    @GetMapping("/users/{userId}/courses")
-    public ResponseEntity<Page<CourseDto>> getAllCoursesByUser(@PathVariable(value = "userId") UUID userId,
-                                                               @PageableDefault(page = 0, size = 10, sort = "courseId",
+    @GetMapping("/courses/{courseId}/users")
+    public ResponseEntity<Page<UserDto>> getAllUsersByCourse(@PathVariable(value = "courseId") UUID courseId,
+                                                             @PageableDefault(page = 0, size = 10, sort = "userId",
                                                                        direction = Sort.Direction.ASC) Pageable pageable) {
-        return ResponseEntity.status(HttpStatus.OK).body(userClient.getAllCoursesByUser(userId, pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(courseClient.getAllUsersByCourse(courseId, pageable));
     }
 }

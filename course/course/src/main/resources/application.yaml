@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ead-course
+    url:  jdbc:postgresql://localhost:5432/ead-course
     username: postgres
     password: root
   jpa:
@@ -14,14 +14,11 @@ spring:
         lob.non-contextual-creation: true
     properties:
       hibernate:
-        show-sql: true
-    output:
-      ansi:
-        enabled: Always
+        show_sql: true
+  output:
+    ansi:
+      enabled: Always
 
 logging:
   level:
-    com.ead: TRACE
-    root: INFO
-    org.springframework.web: DEBUG
-    org.hibernate: DEBUG
+    com.ead: DEBUG

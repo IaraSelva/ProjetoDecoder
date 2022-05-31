@@ -15,9 +15,9 @@ spring:
     properties:
       hibernate:
         show-sql: true
-    output:
-      ansi:
-        enabled: Always
+  output:
+    ansi:
+      enabled: Always
 
 logging:
   level:
