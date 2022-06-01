@@ -50,7 +50,7 @@ public class CourseClient {
             log.error("Error request /courses {} ", e);
         }
 
-        log.info("Ending request /courses courseId {} ", courseId);
+        log.info("Ending request /users courseId {} ", courseId);
 
         return new PageImpl<>(searchResult);
     }

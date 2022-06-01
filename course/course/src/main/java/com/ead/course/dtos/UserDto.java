@@ -4,7 +4,6 @@ import com.ead.course.enums.UserStatus;
 import com.ead.course.enums.UserType;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
@@ -27,9 +26,5 @@ public class UserDto {
     private String cpf;
 
     private String imageUrl;
-
-    private LocalDateTime creationDate;
-
-    private LocalDateTime lastUpdate;
 
 }
