@@ -2,6 +2,7 @@ package com.ead.authuser.controller;
 
 import com.ead.authuser.dto.UserDto;
 import com.ead.authuser.dto.UserView;
+import com.ead.authuser.enums.UserStatus;
 import com.ead.authuser.models.UserModel;
 import com.ead.authuser.services.UserService;
 import com.ead.authuser.specifications.SpecificationTemplate;
@@ -150,6 +151,33 @@ public class UserController {
 
             log.debug("PUT updateImage - userModel saved userId: {} ", userModel.getUserId());
             log.info("Image updated successfully userId {} ", userModel.getUserId());
+            return ResponseEntity.status(HttpStatus.OK).body(userModel);
+        }
+    }
+
+    @PutMapping("/{userId}/status")
+    public ResponseEntity<Object> updateUserStatus(@PathVariable(value = "userId") UUID userId,
+                                              @RequestBody @Validated(UserView.StatusPut.class)
+                                              @JsonView(UserView.StatusPut.class) UserDto userDto) {
+        log.debug("PUT updateUserStatus userDto received {} ", userDto.toString());
+        Optional<UserModel> optionalUserModel = userService.findById(userId);
+        if (optionalUserModel.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        } else {
+            final var userModel = optionalUserModel.get();
+            final var userStatus = userDto.getUserStatus();
+            try {
+                if(userStatus.equals(UserStatus.ACTIVE)||userStatus.equals(UserStatus.BLOCKED)){
+                    userModel.setUserStatus(userDto.getUserStatus());
+                    userModel.setLastUpdate(LocalDateTime.now(ZoneId.of("UTC")));
+                    userService.save(userModel);
+                }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            log.debug("PUT updateUserStatus - userModel saved userId: {} ", userModel.getUserId());
+            log.info("User status updated successfully userId {} ", userModel.getUserId());
             return ResponseEntity.status(HttpStatus.OK).body(userModel);
         }
     }

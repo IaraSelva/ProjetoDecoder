@@ -7,4 +7,6 @@ public interface UserView {
     interface PasswordPut {}
     interface ImagePut {}
 
+    interface StatusPut {}
+
 }

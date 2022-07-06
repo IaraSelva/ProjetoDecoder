@@ -1,5 +1,6 @@
 package com.ead.authuser.dto;
 
+import com.ead.authuser.enums.UserStatus;
 import com.ead.authuser.validation.UserNameConstraint;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
@@ -52,4 +53,7 @@ public class UserDto implements UserView {
     @JsonView(UserView.ImagePut.class)
     @NotBlank(groups = UserView.ImagePut.class, message = "Field cannot be empty")
     private String imageUrl;
+
+    @JsonView(UserView.StatusPut.class)
+    private UserStatus userStatus;
 }
