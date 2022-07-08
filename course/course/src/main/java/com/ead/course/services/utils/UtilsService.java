@@ -21,4 +21,8 @@ public class UtilsService {
     public String createUrlGetOneUserById(UUID userId) {
         return REQUEST_URI + "/users/" + userId;
     }
+
+    public String createUrlPostSubscriptionCourseInUser(UUID userId){
+        return REQUEST_URI + "/users/" + userId + "/courses/subscription";
+    }
 }
